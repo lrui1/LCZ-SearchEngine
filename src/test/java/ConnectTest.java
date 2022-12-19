@@ -5,7 +5,7 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 
-public class Main {
+public class ConnectTest {
     public static void main(String[] args) {
         //创建低级别的客户端
         RestClient restClient = RestClient.builder(

@@ -2,7 +2,7 @@ package crawl;
 
 import java.util.List;
 
-public interface CrawlInt {
+public interface CrawlDao {
     List<String> crawlLinks();
     String crawlTitle();
     String crawlText();

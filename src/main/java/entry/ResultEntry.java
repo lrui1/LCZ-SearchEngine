@@ -7,6 +7,11 @@ public class ResultEntry {
     private String title; // <head> 里的title
     private String text;  // <body>里的text
 
+    // 需添加默认构造函数，否则Jackson会抛出异常，即无法正常完成反序列化
+    public ResultEntry() {
+        super();
+    }
+
     public ResultEntry(String url, String title, String text) {
         this.url = url;
         this.title = title;
@@ -35,6 +40,15 @@ public class ResultEntry {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "ResultEntry{" +
+                "url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                '}';
     }
 
     @Override

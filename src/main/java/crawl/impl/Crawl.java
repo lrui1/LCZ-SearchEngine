@@ -1,6 +1,6 @@
 package crawl.impl;
 
-import crawl.CrawlInt;
+import crawl.CrawlDao;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Crawl implements CrawlInt {
+public class Crawl implements CrawlDao {
     private String URL; //爬虫的目标
     private Document doc;
 
@@ -42,19 +42,19 @@ public class Crawl implements CrawlInt {
     }
 
 
-//    public static void main(String[] args) {
-//        // 从URL加载文档
-//        final String url = "http://cec.jmu.edu.cn/"; // 不能使用https 会报错
-//        Crawl cr;
-//        try {
-//            cr = new Crawl(url);
-//            String text = cr.crawlText();
-//            List<String> links = cr.crawlLinks();
-//            String title = cr.crawlTitle();
-//            System.out.println(title);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public static void main(String[] args) {
+        // 从URL加载文档
+        final String url = "http://cec.jmu.edu.cn/"; // 不能使用https 会报错
+        Crawl cr;
+        try {
+            cr = new Crawl(url);
+            String text = cr.crawlText();
+            List<String> links = cr.crawlLinks();
+            String title = cr.crawlTitle();
+            System.out.println(cr.crawlText());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
