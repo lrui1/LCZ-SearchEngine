@@ -1,6 +1,6 @@
 package ES.impl;
 
-import ES.ESInt;
+import ES.Search;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
@@ -12,23 +12,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ESearch implements ESInt {
+public class ESearch implements Search {
     ElasticsearchClient client;
 
-    public ESearch(ElasticsearchClient client) {
-        this.client = client;
+    public ESearch() {
+        client = ESUtil.getConnect();
     }
 
     @Override
-    public IndexResponse add(ResultEntry entry) {
-        IndexResponse response = null;
+    public ResultEntry add(ResultEntry entry) {
+        IndexResponse response;
         try {
             response = client.index(i -> i
                     .index(ESUtil.index).document(entry));
         } catch (IOException e) {
-
+            return null;
         }
-        return response;
+        return entry;
     }
 
     @Override

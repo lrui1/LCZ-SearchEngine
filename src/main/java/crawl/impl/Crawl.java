@@ -34,7 +34,7 @@ public class Crawl implements CrawlDao {
 
     public String crawlText() {
         StringBuilder sb = new StringBuilder();;
-        Elements texts = doc.select("body");
+        Elements texts = doc.select("body").select("p");// body里的p
         for(Element text : texts) {
             sb.append(text.text());
         }
@@ -44,8 +44,8 @@ public class Crawl implements CrawlDao {
 
     public static void main(String[] args) {
         // 从URL加载文档
-        final String url = "http://cec.jmu.edu.cn/"; // 不能使用https 会报错
-        Crawl cr;
+        final String url = "http://cec.jmu.edu.cn/info/1048/5230.htm"; // 不能使用https 会报错
+        CrawlDao cr;
         try {
             cr = new Crawl(url);
             String text = cr.crawlText();

@@ -8,8 +8,7 @@ import java.util.List;
 
 public class SearchTest {
     public static void main(String[] args) throws IOException {
-        ElasticsearchClient client = ESUtil.getConnect();
-        ESearch es = new ESearch(client);
+        ESearch es = new ESearch();
         List<ResultEntry> resultEntryList = es.search("计算机工程学院");
         for(ResultEntry resultEntry : resultEntryList) {
             System.out.println(resultEntry);
