@@ -1,7 +1,6 @@
 package ES;
 
-import co.elastic.clients.elasticsearch.core.IndexResponse;
-import entry.ResultEntry;
+import Bean.ResultEntry;
 
 import java.util.List;
 

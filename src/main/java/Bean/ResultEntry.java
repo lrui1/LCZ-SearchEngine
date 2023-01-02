@@ -1,4 +1,4 @@
-package entry;
+package Bean;
 
 import java.util.Objects;
 

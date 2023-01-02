@@ -1,6 +1,5 @@
 import ES.impl.ESearch;
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import entry.ResultEntry;
+import Bean.ResultEntry;
 import utils.ESUtil;
 
 import java.io.IOException;

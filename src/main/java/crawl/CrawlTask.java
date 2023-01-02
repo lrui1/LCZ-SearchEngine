@@ -1,7 +1,7 @@
 package crawl;
 
 import crawl.impl.Crawl;
-import entry.ResultEntry;
+import Bean.ResultEntry;
 
 import java.io.IOException;
 import java.util.*;

@@ -5,7 +5,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import entry.ResultEntry;
+import Bean.ResultEntry;
 import utils.ESUtil;
 
 import java.io.IOException;
