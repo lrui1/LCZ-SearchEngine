@@ -15,11 +15,11 @@ public class WatchDog extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("utf-8");
-        String text = request.getParameter("inputText");
-        Search search = new ESearch();
-        List<ResultEntry> searchResult = search.search(text);
-        request.setAttribute("list", searchResult);
-
+        String inputText = request.getParameter("inputText");
+        System.out.println(inputText);
+        request.setAttribute("String", inputText);
+        response.setContentType("text/html;charset=utf-8");
+        request.getRequestDispatcher("Servlet2").forward(request, response);
     }
 
     @Override
