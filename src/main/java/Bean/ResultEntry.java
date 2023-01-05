@@ -1,11 +1,14 @@
 package Bean;
 
+import java.util.Date;
 import java.util.Objects;
 
 public class ResultEntry {
     private String url;   // 所有的<a>标签
     private String title; // <head> 里的title
     private String text;  // <body>里的text
+
+    private Date date;
 
     // 需添加默认构造函数，否则Jackson会抛出异常，即无法正常完成反序列化
     public ResultEntry() {
