@@ -15,11 +15,11 @@
 </head>
 <body>
 
-<div class="container mt-4">
+<div class="container-fluid mt-4">
     <div id="wrapper" class="">
         <form action="填写对应的servlet路径" method="get">
             <div class="input-group w-50">
-                <img src="img/logo.ico" alt="logo" width="32" height="32">
+                <img src="img/small_logo.ico" alt="logo" width="50" height="35">
                 <input type="search"
                        class="form-control search-input ms-3"
                        placeholder="Enter content"
@@ -28,9 +28,15 @@
             </div>
         </form>
     </div>
-    <div id="tool">
-        <span id="searchNumTool">开架大飞机为你找到</span>
-        <span id="dateTool" class="dropdown ms-5">
+</div>
+
+<div class="container mt-1">
+    <div id="tool" class="row">
+        <div class="col-5">
+            <small id="searchNumTool">开架大飞机为你找到</small>
+        </div>
+        <div class="col">
+            <span id="dateTool" class="dropdown">
             <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
                 时间不限
             </button>
@@ -39,7 +45,8 @@
                 <li><a class="dropdown-item" href="#">链接 2</a></li>
                 <li><a class="dropdown-item" href="#">链接 3</a></li>
             </ul>
-        </span>
+            </span>
+        </div>
     </div>
 </div>
 
@@ -49,19 +56,17 @@
     <a class="address" href="#"> loremdadadadada</a>
     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</p>
 
-
-
 </div>
 
-
-
-<ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">上一页</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">下一页</a></li>
-</ul>
+<div class="container">
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+    </ul>
+</div>
 
 <script>
     $(function () {

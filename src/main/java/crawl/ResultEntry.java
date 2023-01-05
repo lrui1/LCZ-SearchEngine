@@ -17,8 +17,6 @@ public class ResultEntry implements CrawlDao{
         this.declearTime = declearTime;
     }
 
-
-
     public String getText() {
         return text;
     }

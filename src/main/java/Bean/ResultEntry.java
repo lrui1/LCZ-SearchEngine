@@ -7,8 +7,7 @@ public class ResultEntry {
     private String url;   // 所有的<a>标签
     private String title; // <head> 里的title
     private String text;  // <body>里的text
-
-    private Date date;
+    private String declearTime; // 时间格式： xxxx-xx-xx
 
     // 需添加默认构造函数，否则Jackson会抛出异常，即无法正常完成反序列化
     public ResultEntry() {
@@ -43,6 +42,14 @@ public class ResultEntry {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getDeclearTime() {
+        return declearTime;
+    }
+
+    public void setDeclearTime(String declearTime) {
+        this.declearTime = declearTime;
     }
 
     @Override
