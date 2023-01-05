@@ -1,15 +1,12 @@
 package crawl;
-
 import Bean.ResultEntry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class getMessageFunctions {
     public static List<ResultEntry> getMessage(Document connection, String selection) throws IOException {//解析表面一层的链接
         List<ResultEntry>backList=new ArrayList<>();
@@ -25,6 +22,7 @@ public class getMessageFunctions {
                 String declearTime = getDeclearTime(Jsoup.connect(e.getUrl()).get());
                 e.setDeclearTime(declearTime);
                 backList.add(e);
+                System.out.println(e.toString());
             }catch (Exception E){
                 continue;
             }
@@ -47,13 +45,13 @@ public class getMessageFunctions {
                 e.setDeclearTime(declearTime);
                 e.setText(text);
                 backList.add(e);
+                System.out.println(e.toString());
             }catch (Exception E){
                 continue;
             }
         }
         return backList;
     }
-
     public static List<ResultEntry>getPageTurnMsg(String href) throws IOException {//获取全部翻页的内容
         List<ResultEntry>backList=new ArrayList<>();
         List<ResultEntry>list=new ArrayList<>();
@@ -86,12 +84,6 @@ public class getMessageFunctions {
         int indexOf = text.indexOf("时间：");
         if (indexOf != -1) return (text.substring(indexOf + 3));
         else return null;
-    }
-    public static void print(List<ResultEntry>list)
-    {
-        for (ResultEntry resultEntry : list) {
-            System.out.println(resultEntry.toString());
-        }
     }
     public static List<ResultEntry>addToPrintList(List<ResultEntry>printList, List<ResultEntry>addList){
         for (ResultEntry resultEntry : addList) {

@@ -1,17 +1,14 @@
 package crawl;
-
 import Bean.ResultEntry;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 public class getJmuCecMessage extends getMessageFunctions {
     public static List<ResultEntry> backJmuCecMessage() throws IOException {
 //爬取class类部分
