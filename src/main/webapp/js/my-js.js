@@ -12,33 +12,26 @@ function getQueryVariable(variable)
     return("");
 }
 
-function getSuggest() {
-    // 发送一个Ajax请求给
-
-
-    var availableTags = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"
-    ];
-    return availableTags;
-}
+//参考实例2——https://www.runoob.com/jqueryui/api-autocomplete.html#option-source
+$(function () {
+    $(".search-input").autocomplete({
+        source: function( request, response ) {
+            var input = $(".search-input").val();
+            var source = "";
+            $.ajax({
+                type : "get",
+                url : "SearchSuggest",
+                datatype : "json",
+                data: {"input": input},
+                async : false,
+                error : function() {
+                    console.error("Load recommand data failed!");
+                },
+                success : function(data) {
+                    source = data;
+                }
+            });
+            response(JSON.parse(decodeURI(source)));
+        }
+    })
+})

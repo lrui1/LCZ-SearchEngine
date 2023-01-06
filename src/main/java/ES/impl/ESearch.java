@@ -6,9 +6,14 @@ import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.*;
 import Bean.ResultEntry;
+import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
+import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
+import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import utils.ESUtil;
 
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,22 +64,6 @@ public class ESearch implements Search {
 
     @Override
     public List<String> getSearchSuggest(String prefix) {
-//        SearchResponse<TestEntry> search = null;
-//        try {
-//            client.search(se -> se
-//                            .index(ESUtil.index)
-//                            .suggest(su -> su
-//                                    .suggesters(key, sg -> {
-//                                        sg.prefix(prefix);
-//                                        sg.completion(co -> co
-//                                                .field(field));
-//                                        return sg;
-//                                    }))
-//                    , TestEntry.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
         SearchResponse<ResultEntry> search = null;
 
         try {
@@ -90,36 +79,53 @@ public class ESearch implements Search {
             e.printStackTrace();
         }
 
-//        Reader queryJson = new StringReader("{\n" +
-//                "  \"query\": {\n" +
-//                "    \"match\": {\n" +
-//                "      \"title\": "+prefix+"\n" +
-//                "    }\n" +
-//                "  }\n" +
-//                "}");
-//
-//        SearchRequest request = new SearchRequest.Builder()
-//                .withJson(queryJson)
-//                .index(ESUtil.index)
-//                .build();
-//
-//        try {
-//            search = client.search(request, TestEntry.class);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
         List<String> ret = new ArrayList<>();
-
         List<Hit<ResultEntry>> hits = search.hits().hits();
         for(Hit<ResultEntry> hit : hits) {
             ret.add(hit.source().getTitle());
         }
         return ret;
     }
+    @Override
+    public boolean newIndex(Reader reader) {
+        CreateIndexRequest createIndexRequest = new CreateIndexRequest.Builder()
+                .withJson(reader)
+                .index(ESUtil.index)
+                .build();
+
+        CreateIndexResponse response = null;
+        try {
+            response = client.indices().create(createIndexRequest);
+        } catch (Exception e) {
+
+        }
+        if(response != null) {
+            return response.acknowledged();
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteIndex() {
+        DeleteIndexResponse deleteIndexResponse = null;
+        try {
+            deleteIndexResponse = client.indices().delete(d -> d
+                    .index(ESUtil.index));
+        } catch (Exception e) {
+
+        }
+        if(deleteIndexResponse == null) {
+            return false;
+        } else {
+            return deleteIndexResponse.acknowledged();
+        }
+    }
 
     @Override
     public void close() {
         ESUtil.release();
+//        System.exit(0);//强制杀死进程
     }
 }

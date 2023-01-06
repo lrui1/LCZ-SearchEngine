@@ -25,7 +25,7 @@ public class ESUtil {
     private static RestClient restClient;
     private static ElasticsearchTransport transport;
 
-    public static final String index = "link-repo1";
+    public static String index = "link-repo1";
     public static ElasticsearchClient getConnect() {
         // 创建许可证
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
