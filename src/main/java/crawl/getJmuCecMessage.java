@@ -24,7 +24,6 @@ public class getJmuCecMessage extends getMessageFunctions {
         List<ResultEntry> nestMessage = new ArrayList<>();
         for (String s : classSet) {
             message = getMessage(document, "div." + s + ">a");
-            addToPrintList(printList, message);
             for (ResultEntry resultEntry : message) {
                 Document connect = Jsoup.connect(resultEntry.getUrl()).get();
                 nestMessage = getNestMessage(connect, "div.er_right_new>ul>li", "..", "http://cec.jmu.edu.cn");
