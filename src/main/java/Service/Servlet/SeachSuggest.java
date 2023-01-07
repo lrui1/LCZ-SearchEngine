@@ -1,4 +1,4 @@
-package Service;
+package Service.Servlet;
 
 import ES.Search;
 import ES.impl.ESearch;

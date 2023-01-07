@@ -9,19 +9,27 @@ import Bean.ResultEntry;
 import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
+import co.elastic.clients.json.JsonData;
+import com.alibaba.fastjson.JSON;
+import jakarta.json.JsonValue;
 import utils.ESUtil;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ESearch implements Search {
     ElasticsearchClient client;
+    private long searchCount = 0;
 
     public ESearch() {
         client = ESUtil.getConnect();
+    }
+
+    @Override
+    public long getSearchCount() {
+        return searchCount;
     }
 
     @Override
@@ -50,17 +58,67 @@ public class ESearch implements Search {
                             ),
                     ResultEntry.class);
         } catch (IOException e) {
-            return null;
+            e.printStackTrace();
         }
 
-        List<ResultEntry> ret = new ArrayList<>();
-
-        List<Hit<ResultEntry>> lists = response.hits().hits();
-        for(Hit<ResultEntry> resultEntryHit : lists) {
-            ret.add(resultEntryHit.source());
-        }
-        return ret;
+        return dealSearchResponse(response);
     }
+
+    @Override
+    public List<ResultEntry> search(String searchText, int page) {
+        int value = (page - 1) * 10;// 页数从0开始编号
+        SearchResponse<ResultEntry> search = null;
+        try {
+            search = client.search(s -> s
+                            .index(ESUtil.index)
+                            .query(q -> q
+                                    .match(m -> m
+                                            .field("text")
+                                            .query(searchText)))
+                            .from(value)
+                            .size(10)
+                    , ResultEntry.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dealSearchResponse(search);
+    }
+
+    @Override
+    public List<ResultEntry> search(String searchText, int page, String beginDate) {
+        int value = (page - 1) * 10;// 页数从0开始编号
+        JsonData jsonBeginDate = JsonData.of(beginDate);
+        System.out.println(jsonBeginDate);
+
+        SearchResponse<ResultEntry> search = null;
+        try {
+            search = client.search(s -> s
+                            .index(ESUtil.index)
+                            .query(q -> q
+                                    .bool(b -> b
+                                            .must(builder -> builder
+                                                    .match(builder1 -> builder1
+                                                            .field("text")
+                                                            .query(searchText)))
+                                            .filter(builder -> builder
+                                                    .range(builder1 -> builder1
+                                                            .field("declearTime")
+                                                            .gte(jsonBeginDate)))))
+//                            .from(value)
+//                            .size(10)
+                    , ResultEntry.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return dealSearchResponse(search);
+    }
+
+    @Override
+    public List<ResultEntry> search(String searchText, int page, String beginDate, String endDate) {
+        return null;
+    }
+
 
     @Override
     public List<String> getSearchSuggest(String prefix) {
@@ -79,12 +137,16 @@ public class ESearch implements Search {
             e.printStackTrace();
         }
 
-        List<String> ret = new ArrayList<>();
-        List<Hit<ResultEntry>> hits = search.hits().hits();
-        for(Hit<ResultEntry> hit : hits) {
-            ret.add(hit.source().getTitle());
+        if(search != null) {
+            List<String> ret = new ArrayList<>();
+            List<Hit<ResultEntry>> hits = search.hits().hits();
+            for(Hit<ResultEntry> hit : hits) {
+                ret.add(hit.source().getTitle());
+            }
+            return ret;
+        } else {
+            return null;
         }
-        return ret;
     }
     @Override
     public boolean newIndex(Reader reader) {
@@ -126,6 +188,19 @@ public class ESearch implements Search {
     @Override
     public void close() {
         ESUtil.release();
-//        System.exit(0);//强制杀死进程
+    }
+
+    private List<ResultEntry> dealSearchResponse(SearchResponse<ResultEntry> searchResponse) {
+        if(searchResponse != null) {
+            List<ResultEntry> resultEntryList = new ArrayList<>();
+            List<Hit<ResultEntry>> hits = searchResponse.hits().hits();
+            searchCount = searchResponse.hits().total().value();
+            for(Hit<ResultEntry> hit : hits) {
+                resultEntryList.add(hit.source());
+            }
+            return resultEntryList;
+        } else {
+            return null;
+        }
     }
 }

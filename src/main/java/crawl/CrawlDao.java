@@ -7,5 +7,4 @@ public interface CrawlDao {
     List<String> crawlLinks();
     String crawlTitle();
     String crawlText();
-    Date crwalDate();
 }

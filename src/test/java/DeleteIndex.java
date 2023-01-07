@@ -1,5 +1,3 @@
-import ES.Search;
-import ES.impl.ESearch;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import utils.ESUtil;

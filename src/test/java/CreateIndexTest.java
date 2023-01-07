@@ -1,8 +1,5 @@
 import ES.Search;
 import ES.impl.ESearch;
-import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
-import utils.ESUtil;
 
 import java.io.IOException;
 

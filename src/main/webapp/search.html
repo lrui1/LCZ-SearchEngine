@@ -11,6 +11,7 @@
     <script src="js/jquery-3.6.3.min.js"></script>
     <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="Stylesheet"></link>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" ></script>
+    <script src="js/jq-paginator.min.js"></script>
     <title>search</title>
 </head>
 <body>
@@ -19,7 +20,7 @@
     <div id="wrapper" class="">
         <form action="填写对应的servlet路径" method="get">
             <div class="input-group w-50">
-                <img src="img/small_logo.ico" alt="logo" width="50" height="35">
+                <img src="img/small_logo.png" alt="logo" width="75" height="35">
                 <input type="search"
                        class="form-control search-input ms-3"
                        placeholder="Enter content"
@@ -59,26 +60,12 @@
 </div>
 
 <div class="container">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">上一页</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+    <small id="my-pagination-text">当前第1页</small>
+    <ul id="my-pagination" class="pagination">
+
     </ul>
 </div>
 
-<script>
-    $(function () {
-        $("#datepicker").datepicker();
-    })
-</script>
-
-<script>
-    $(".address").load(
-
-    )
-</script>
 <script src="js/my-js.js"></script>
 <script src="bootstrap5/js/bootstrap.bundle.min.js" ></script>
 </body>

@@ -1,10 +1,7 @@
-import Bean.ResultEntry;
 import ES.Search;
 import ES.impl.ESearch;
 import com.alibaba.fastjson.JSON;
 
-import java.io.Reader;
-import java.io.StringReader;
 import java.util.List;
 
 public class SearchSuggestTest {

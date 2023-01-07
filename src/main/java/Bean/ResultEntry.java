@@ -1,23 +1,23 @@
 package Bean;
 
-import java.util.Date;
 import java.util.Objects;
 
 public class ResultEntry {
     private String url;   // 所有的<a>标签
     private String title; // <head> 里的title
     private String text;  // <body>里的text
-    private String declearTime; // 时间格式： xxxx-xx-xx
+    private String declareTime; // 时间格式： xxxx-xx-xx
 
     // 需添加默认构造函数，否则Jackson会抛出异常，即无法正常完成反序列化
     public ResultEntry() {
         super();
     }
 
-    public ResultEntry(String url, String title, String text) {
+    public ResultEntry(String url, String title, String text, String declareTime) {
         this.url = url;
         this.title = title;
         this.text = text;
+        this.declareTime = declareTime;
     }
 
     public String getUrl() {
@@ -44,21 +44,12 @@ public class ResultEntry {
         this.text = text;
     }
 
-    public String getDeclearTime() {
-        return declearTime;
+    public String getDeclareTime() {
+        return declareTime;
     }
 
-    public void setDeclearTime(String declearTime) {
-        this.declearTime = declearTime;
-    }
-
-    @Override
-    public String toString() {
-        return "ResultEntry{" +
-                "url='" + url + '\'' +
-                ", title='" + title + '\'' +
-                ", text='" + text + '\'' +
-                '}';
+    public void setDeclareTime(String declareTime) {
+        this.declareTime = declareTime;
     }
 
     @Override
@@ -66,11 +57,11 @@ public class ResultEntry {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ResultEntry that = (ResultEntry) o;
-        return Objects.equals(url, that.url) && Objects.equals(title, that.title) && Objects.equals(text, that.text);
+        return Objects.equals(url, that.url) && Objects.equals(title, that.title) && Objects.equals(text, that.text) && Objects.equals(declareTime, that.declareTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(url, title, text);
+        return Objects.hash(url, title, text, declareTime);
     }
 }

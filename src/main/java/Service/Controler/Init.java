@@ -1,4 +1,4 @@
-package Service;
+package Service.Controler;
 
 import Bean.ResultEntry;
 import ES.Search;
@@ -45,7 +45,7 @@ public class Init {
                 "        \"type\": \"text\",\n" +
                 "        \"analyzer\": \"ik_max_word\"\n" +
                 "      },\n" +
-                "      \"date\": {\n" +
+                "      \"declareTime\": {\n" +
                 "        \"type\": \"date\"\n" +
                 "      }\n" +
                 "    }\n" +

@@ -1,5 +1,5 @@
 /**
- * 根据变量名获取匹配值
+ * 从url中获取 根据变量名获取匹配值
  */
 function getQueryVariable(variable)
 {
@@ -12,6 +12,10 @@ function getQueryVariable(variable)
     return("");
 }
 
+
+/**
+ * 自动填充——搜索提示
+ */
 //参考实例2——https://www.runoob.com/jqueryui/api-autocomplete.html#option-source
 $(function () {
     $(".search-input").autocomplete({
@@ -35,3 +39,4 @@ $(function () {
         }
     })
 })
+

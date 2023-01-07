@@ -20,7 +20,7 @@ public class getMessageFunctions {
             try {
                 String text = Jsoup.connect(e.getUrl()).get().text();e.setText(text);
                 String declearTime = getDeclearTime(Jsoup.connect(e.getUrl()).get());
-                e.setDeclearTime(declearTime);
+                e.setDeclareTime(declearTime);
                 backList.add(e);
             }catch (Exception E){
                 continue;
@@ -41,7 +41,7 @@ public class getMessageFunctions {
             try {
                 String text = Jsoup.connect(e.getUrl()).get().text();
                 String declearTime = getDeclearTime(Jsoup.connect(e.getUrl()).get());
-                e.setDeclearTime(declearTime);
+                e.setDeclareTime(declearTime);
                 int textBeginIndex = text.indexOf("正文");
                 e.setText(text.substring(textBeginIndex+2));
                 backList.add(e);
