@@ -6,10 +6,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 public class getMessageFunctions {
     public static List<ResultEntry> getMessage(Document connection, String selection) throws IOException {//解析表面一层的链接
-        List<ResultEntry>backList=new ArrayList<>();
+        Set<ResultEntry> backSet=new HashSet<>();
         Elements select = connection.select(selection);
         for (Element element : select) {
             Elements a = element.getElementsByTag("a");
@@ -21,16 +24,17 @@ public class getMessageFunctions {
                 String text = Jsoup.connect(e.getUrl()).get().text();e.setText(text);
                 String declearTime = getDeclearTime(Jsoup.connect(e.getUrl()).get());
                 e.setDeclareTime(declearTime);
-                backList.add(e);
+                backSet.add(e);
             }catch (Exception E){
                 continue;
             }
         }
+        List<ResultEntry>backList=new ArrayList<>(backSet);
         return backList;
     }
     public  static List<ResultEntry> getNestMessage(Document connection, String selection, String target, String repleacement) throws IOException {
        //解析深层次的链接内容
-        List<ResultEntry>backList=new ArrayList<>();
+        Set<ResultEntry>backSet=new HashSet<>();
         Elements select = connection.select(selection);
         for (Element element : select) {
             Elements a = element.getElementsByTag("a");
@@ -44,12 +48,13 @@ public class getMessageFunctions {
                 e.setDeclareTime(declearTime);
                 int textBeginIndex = text.indexOf("正文");
                 e.setText(text.substring(textBeginIndex+2));
-                backList.add(e);
+                backSet.add(e);
                 System.out.println(e.toString());
             }catch (Exception E){
                 continue;
             }
         }
+        List<ResultEntry>backList=new ArrayList<>(backSet);
         return backList;
     }
     public static List<ResultEntry>getPageTurnMsg(String href) throws IOException {//获取全部翻页的内容
