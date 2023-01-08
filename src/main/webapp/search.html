@@ -12,7 +12,8 @@
     <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="Stylesheet"></link>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" ></script>
     <script src="js/jq-paginator.min.js"></script>
-    <title>search</title>
+    <link rel="shortcut icon" href="img/favicon.png">
+    <title>LCZ-SEARCH</title>
 </head>
 <body>
 
@@ -20,7 +21,7 @@
     <div id="wrapper" class="">
         <form action="填写对应的servlet路径" method="get">
             <div class="input-group w-50">
-                <img src="img/small_logo.png" alt="logo" width="75" height="35">
+                <img src="img/logo.png" alt="logo" width="50" height="45">
                 <input type="search"
                        class="form-control search-input ms-3"
                        placeholder="Enter content"
@@ -42,9 +43,9 @@
                 时间不限
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">链接 1</a></li>
-                <li><a class="dropdown-item" href="#">链接 2</a></li>
-                <li><a class="dropdown-item" href="#">链接 3</a></li>
+                <li><a id="range-week" class="dropdown-item" href="#">一周内</a></li>
+                <li><a id="range-month" class="dropdown-item" href="#">一月内</a></li>
+                <li><a id="range-year" class="dropdown-item" href="#">一年内</a></li>
             </ul>
             </span>
         </div>
@@ -54,9 +55,17 @@
 <div class="container">
 <!--    a
         p   -->
-    <a class="address" href="#"> loremdadadadada</a>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</p>
+    <div class="result">
+        <div class="col-7">
+            <a class="address" href="https://www.bilibili.com/" target="_blank"> loremdadadadada</a><br>
+            <p>Lorem <font color="red">ipsum</font> dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</p>
+        </div>
+        <div class="col-7">
+            <a class="address" href="https://www.bilibili.com/" target="_blank"> loremdadadadada</a><br>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</small></p>
+        </div>
 
+    </div>
 </div>
 
 <div class="container">

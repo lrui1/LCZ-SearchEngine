@@ -53,6 +53,16 @@ public class ResultEntry {
     }
 
     @Override
+    public String toString() {
+        return "ResultEntry{" +
+                "url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", text='" + text + '\'' +
+                ", declareTime='" + declareTime + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

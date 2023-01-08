@@ -10,14 +10,15 @@ import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.json.JsonData;
-import com.alibaba.fastjson.JSON;
-import jakarta.json.JsonValue;
+
 import utils.ESUtil;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ESearch implements Search {
     ElasticsearchClient client;
@@ -68,13 +69,19 @@ public class ESearch implements Search {
     public List<ResultEntry> search(String searchText, int page) {
         int value = (page - 1) * 10;// 页数从0开始编号
         SearchResponse<ResultEntry> search = null;
+
         try {
             search = client.search(s -> s
                             .index(ESUtil.index)
                             .query(q -> q
-                                    .match(m -> m
-                                            .field("text")
-                                            .query(searchText)))
+                                    .multiMatch(m -> m
+                                            .query(searchText)
+                                            .fields("title", "text")))
+                            .highlight(h -> h
+                                    .preTags("<font>")
+                                    .postTags("</font>")
+                                    .fields("title", builder -> builder)
+                                    .fields("text", builder -> builder))
                             .from(value)
                             .size(10)
                     , ResultEntry.class);
@@ -89,34 +96,63 @@ public class ESearch implements Search {
     public List<ResultEntry> search(String searchText, int page, String beginDate) {
         int value = (page - 1) * 10;// 页数从0开始编号
         JsonData jsonBeginDate = JsonData.of(beginDate);
-        System.out.println(jsonBeginDate);
-
         SearchResponse<ResultEntry> search = null;
         try {
             search = client.search(s -> s
                             .index(ESUtil.index)
                             .query(q -> q
                                     .bool(b -> b
-                                            .must(builder -> builder
-                                                    .match(builder1 -> builder1
-                                                            .field("text")
-                                                            .query(searchText)))
-                                            .filter(builder -> builder
-                                                    .range(builder1 -> builder1
-                                                            .field("declearTime")
+                                            .must(b1 -> b1
+                                                    .multiMatch(b2 -> b2
+                                                            .query(searchText)
+                                                            .fields("title", "text")))
+                                            .filter(b3 -> b3
+                                                    .range(b4 -> b4
+                                                            .field("declareTime")
                                                             .gte(jsonBeginDate)))))
-//                            .from(value)
-//                            .size(10)
+                            .highlight(h -> h
+                                    .preTags("<font>")
+                                    .postTags("</font>")
+                                    .fields("title", builder -> builder)
+                                    .fields("text", builder -> builder))
+                            .from(value)
+                            .size(10)
                     , ResultEntry.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return dealSearchResponse(search);
     }
 
     @Override
     public List<ResultEntry> search(String searchText, int page, String beginDate, String endDate) {
-        return null;
+        int value = (page - 1) * 10;// 页数从0开始编号
+        JsonData jsonBeginDate = JsonData.of(beginDate);
+        JsonData jsonEndDate = JsonData.of(endDate);
+        SearchResponse<ResultEntry> search = null;
+        try {
+            search = client.search(s -> s
+                            .index(ESUtil.index)
+                            .query(q -> q
+                                    .bool(b -> b
+                                            .must(b1 -> b1
+                                                    .match(b2 -> b2
+                                                            .field("text")
+                                                            .query(searchText)))
+                                            .filter(b3 -> b3
+                                                    .range(b4 -> b4
+                                                            .field("declareTime")
+                                                            .gte(jsonBeginDate)
+                                                            .lte(jsonEndDate)))))
+                            .from(value)
+                            .size(10)
+                    , ResultEntry.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return dealSearchResponse(search);
     }
 
 
@@ -196,7 +232,19 @@ public class ESearch implements Search {
             List<Hit<ResultEntry>> hits = searchResponse.hits().hits();
             searchCount = searchResponse.hits().total().value();
             for(Hit<ResultEntry> hit : hits) {
-                resultEntryList.add(hit.source());
+                ResultEntry source = hit.source();
+                Map<String, List<String>> highlight = hit.highlight();
+                if(highlight != null) {
+                    List<String> titles = highlight.get("title");
+                    List<String> texts = highlight.get("text");
+                    if(titles != null && titles.size() > 0) {
+                        source.setTitle(titles.get(0));
+                    }
+                    if(texts != null && texts.size() > 0) {
+                        source.setText(texts.get(0));
+                    }
+                }
+                resultEntryList.add(source);
             }
             return resultEntryList;
         } else {

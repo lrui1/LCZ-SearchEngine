@@ -24,26 +24,37 @@
     <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="Stylesheet"></link>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" ></script>
     <script src="js/jq-paginator.min.js"></script>
-    <title>search</title>
+    <link rel="shortcut icon" href="img/favicon.png">
+    <title>LCZ-SEARCH</title>
 </head>
 <body>
 
 <%
     /**
-     * 接受表单请求
+     * 接受表单请求, 分页请求，日期选择请求，
+     * 未来将封装至servlet 返回json，通过setAttribute
      */
     request.setCharacterEncoding("utf-8");
     String inputText = request.getParameter("inputText");
-    String currentPage = request.getParameter("page");
-    if(currentPage == null) {
-        currentPage = "1";
-    }
+    String page1 = request.getParameter("page");
+    String beginDate = request.getParameter("beginDate");
+    String endDate = request.getParameter("endDate");
 
+    // 给currentPage, beginDate, endDate初始值
+    if(page1 == null) {
+        page1 = "1";
+    }
+    int currentPage = Integer.parseInt(page1);
+
+    // 去后台搜索结果
     Search search = new ESearch();
     List<ResultEntry> searchResult = new ArrayList<>();
-
     if(inputText != null) {
-        searchResult = search.search(inputText, Integer.parseInt(currentPage));
+        if(beginDate == null && endDate == null) {
+            searchResult = search.search(inputText, currentPage);
+        } else if (endDate == null) {
+            searchResult = search.search(inputText, currentPage, beginDate);
+        }
     }
     long searchCount = search.getSearchCount();
 
@@ -55,7 +66,7 @@
     <div id="wrapper" class="">
         <form action="search.jsp" method="get">
             <div class="input-group w-50">
-                <img src="img/small_logo.png" alt="logo" width="50" height="35">
+                <img src="img/logo.png" alt="logo" width="50" height="45">
                 <input type="search"
                        class="form-control search-input ms-3"
                        placeholder="Enter content"
@@ -75,13 +86,14 @@
         </div>
         <div class="col">
             <span id="dateTool" class="dropdown">
-            <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+            <button type="button" id="drop-button1" class="btn btn-primary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
                 时间不限
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">一周内</a></li>
-                <li><a class="dropdown-item" href="#">一月内</a></li>
-                <li><a class="dropdown-item" href="#">一年内</a></li>
+                <li><a id="range-all" class="dropdown-item" href="#">时间不限</a></li>
+                <li><a id="range-week" class="dropdown-item" href="#">一周内</a></li>
+                <li><a id="range-month" class="dropdown-item" href="#">一月内</a></li>
+                <li><a id="range-year" class="dropdown-item" href="#">一年内</a></li>
             </ul>
             </span>
         </div>
@@ -89,20 +101,31 @@
 </div>
 
 <div class="container">
-    <%
-        for(ResultEntry resultEntry : searchResult) {
-            out.println("<a class=\"address\" href="+resultEntry.getUrl()+">"+resultEntry.getTitle()+"</a>");
-            int index1 = resultEntry.getText().indexOf(inputText);
-            int front = index1-30, behind = index1+30;
-            if(front < 0)
-                front = 0;
-            if(behind > resultEntry.getText().length() - 1)
-                behind = resultEntry.getText().length();
-            String content = resultEntry.getText().substring(front, behind);
-            out.println("<p>"+content+"</p>");
-        }
-//        search.close(); //释放资源
-    %>
+    <div class="result">
+        <%
+            for(ResultEntry resultEntry : searchResult) {
+                out.println("<div class=\"col-7\">");
+                out.println("<a class=\"address\" href="+resultEntry.getUrl()+" target=\"_blank\">"+resultEntry.getTitle()+"</a>");
+//            int index1 = resultEntry.getText().indexOf(inputText);
+//            int front = index1-30, behind = index1+30;
+//            if(front < 0)
+//                front = 0;
+//            if(behind > resultEntry.getText().length() - 1)
+//                behind = resultEntry.getText().length();
+//            String content = resultEntry.getText().substring(front, behind);
+                String content = resultEntry.getText();
+                if(content.length() > 100) {
+                    content = content.substring(0, 99);
+                }
+                out.println("<p class=\"text-break\">"+content+"</p>");
+                out.println("</div>");
+            }
+        %>
+    </div>
+</div>
+
+<div class="container">
+
 </div>
 
 <div class="container">
@@ -129,16 +152,22 @@
         onPageChange: function (num, type) {
             $('#my-pagination-text').html('当前第' + num + '页');
             if("change" == type) { // 换页触发的
-                var inputText = getQueryVariable("inputText");
-                console.log("search.jsp?inputText="+inputText+"&page="+num);
-                window.location.href = "search.jsp?inputText="+inputText+"&page="+num;
+                let inputText = getQueryVariable("inputText");
+                let beginDate = getQueryVariable("beginDate");
+                // console.log("search.jsp?inputText="+inputText+"&page="+num);
+                if(beginDate != "") {
+                    window.location.href = "search.jsp?inputText="+inputText+"&page="+num+"&beginDate="+beginDate;
+                } else {
+                    window.location.href = "search.jsp?inputText="+inputText+"&page="+num;
+                }
             }
         }
     });
 </script>
 
+
 <script>
-<%--    给input部件增加初始值--%>
+    <%--    给input部件增加初始值--%>
     $(".search-input").val(getQueryVariable("inputText"));
 </script>
 

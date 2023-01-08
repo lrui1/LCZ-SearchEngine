@@ -9,5 +9,8 @@
         <module name="searchTestBy-lrui1" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Init" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>
