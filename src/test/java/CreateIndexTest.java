@@ -1,11 +1,11 @@
-import ES.Search;
-import ES.impl.ESearch;
+import es.Search;
+import es.impl.EsSearch;
 
 import java.io.IOException;
 
 public class CreateIndexTest {
     public static void main(String[] args) throws IOException {
-        Search search = new ESearch();
+        Search search = new EsSearch();
 
         search.close();
     }

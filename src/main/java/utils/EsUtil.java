@@ -15,11 +15,16 @@ import org.elasticsearch.client.RestClientBuilder;
 
 import java.io.IOException;
 
-public class ESUtil {
+/**
+ * @author 开架大飞机
+ * @description ES连接工具类
+ * @date: 2022/12/19
+ */
+public class EsUtil {
     private static final String URL = "localhost";
-    private static final int port = 9200;
-    private static final String username = "elastic";
-    private static final String password = "jmu_zuicaide";
+    private static final int PORT = 9200;
+    private static final String USERNAME = "elastic";
+    private static final String PASSWORD = "jmu_zuicaide";
 
     private static RestClient restClient;
     private static ElasticsearchTransport transport;
@@ -29,17 +34,16 @@ public class ESUtil {
         // 创建许可证
         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
         credentialsProvider.setCredentials(
-                AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+                AuthScope.ANY, new UsernamePasswordCredentials(USERNAME, PASSWORD));
         // 导入许可证
-        RestClientBuilder builder = RestClient.builder(new HttpHost(URL, port))
+        RestClientBuilder builder = RestClient.builder(new HttpHost(URL, PORT))
                 .setHttpClientConfigCallback(httpAsyncClientBuilder -> httpAsyncClientBuilder
                         .setDefaultCredentialsProvider(credentialsProvider));
         // 建立连接
         restClient = builder.build();
         transport = new RestClientTransport(
                 restClient, new JacksonJsonpMapper());
-        ElasticsearchClient client = new ElasticsearchClient(transport);
-        return client;
+        return new ElasticsearchClient(transport);
     }
 
     public static void release() {

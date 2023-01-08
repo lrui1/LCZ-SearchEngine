@@ -1,9 +1,9 @@
-import ES.Search;
-import ES.impl.ESearch;
+import es.Search;
+import es.impl.EsSearch;
 
 public class ConnectTest {
     public static void main(String[] args) {
-        Search search = new ESearch();
+        Search search = new EsSearch();
         search.close();
     }
 }

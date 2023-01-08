@@ -1,31 +1,35 @@
-package ES.impl;
+package es.impl;
 
-import ES.Search;
+import es.Search;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
-import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.*;
-import Bean.ResultEntry;
+import bean.ResultEntry;
 import co.elastic.clients.elasticsearch.indices.CreateIndexRequest;
 import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.elastic.clients.json.JsonData;
 
-import utils.ESUtil;
+import utils.EsUtil;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class ESearch implements Search {
+/**
+ * @author 开架大飞机
+ * @description ES实现搜索接口类
+ * @date: 2022/12/17
+ */
+public class EsSearch implements Search {
     ElasticsearchClient client;
     private long searchCount = 0;
 
-    public ESearch() {
-        client = ESUtil.getConnect();
+    public EsSearch() {
+        client = EsUtil.getConnect();
     }
 
     @Override
@@ -35,10 +39,9 @@ public class ESearch implements Search {
 
     @Override
     public ResultEntry add(ResultEntry entry) {
-        IndexResponse response;
         try {
-            response = client.index(i -> i
-                    .index(ESUtil.index).document(entry));
+            client.index(i -> i
+                    .index(EsUtil.index).document(entry));
         } catch (IOException e) {
             return null;
         }
@@ -50,7 +53,7 @@ public class ESearch implements Search {
         SearchResponse<ResultEntry> response = null;
         try {
             response = client.search(s -> s
-                    .index(ESUtil.index)
+                    .index(EsUtil.index)
                             .query(q -> q
                                     .match(m -> m
                                             .field("text")
@@ -67,12 +70,13 @@ public class ESearch implements Search {
 
     @Override
     public List<ResultEntry> search(String searchText, int page) {
-        int value = (page - 1) * 10;// 页数从0开始编号
+        // 页数从0开始编号
+        int value = (page - 1) * 10;
         SearchResponse<ResultEntry> search = null;
 
         try {
             search = client.search(s -> s
-                            .index(ESUtil.index)
+                            .index(EsUtil.index)
                             .query(q -> q
                                     .multiMatch(m -> m
                                             .query(searchText)
@@ -94,12 +98,13 @@ public class ESearch implements Search {
 
     @Override
     public List<ResultEntry> search(String searchText, int page, String beginDate) {
-        int value = (page - 1) * 10;// 页数从0开始编号
+        // 页数从0开始编号
+        int value = (page - 1) * 10;
         JsonData jsonBeginDate = JsonData.of(beginDate);
         SearchResponse<ResultEntry> search = null;
         try {
             search = client.search(s -> s
-                            .index(ESUtil.index)
+                            .index(EsUtil.index)
                             .query(q -> q
                                     .bool(b -> b
                                             .must(b1 -> b1
@@ -127,13 +132,14 @@ public class ESearch implements Search {
 
     @Override
     public List<ResultEntry> search(String searchText, int page, String beginDate, String endDate) {
-        int value = (page - 1) * 10;// 页数从0开始编号
+        // 页数从0开始编号
+        int value = (page - 1) * 10;
         JsonData jsonBeginDate = JsonData.of(beginDate);
         JsonData jsonEndDate = JsonData.of(endDate);
         SearchResponse<ResultEntry> search = null;
         try {
             search = client.search(s -> s
-                            .index(ESUtil.index)
+                            .index(EsUtil.index)
                             .query(q -> q
                                     .bool(b -> b
                                             .must(b1 -> b1
@@ -162,7 +168,7 @@ public class ESearch implements Search {
 
         try {
             search = client.search(s -> s
-                            .index(ESUtil.index)
+                            .index(EsUtil.index)
                             .query(q -> q
                                     .match(m -> m
                                             .field("title")
@@ -177,7 +183,10 @@ public class ESearch implements Search {
             List<String> ret = new ArrayList<>();
             List<Hit<ResultEntry>> hits = search.hits().hits();
             for(Hit<ResultEntry> hit : hits) {
-                ret.add(hit.source().getTitle());
+                ResultEntry source = hit.source();
+                if(source != null) {
+                    ret.add(source.getTitle());
+                }
             }
             return ret;
         } else {
@@ -188,19 +197,18 @@ public class ESearch implements Search {
     public boolean newIndex(Reader reader) {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest.Builder()
                 .withJson(reader)
-                .index(ESUtil.index)
+                .index(EsUtil.index)
                 .build();
 
         CreateIndexResponse response = null;
         try {
             response = client.indices().create(createIndexRequest);
         } catch (Exception e) {
-
+            // 创建索引引发的异常
         }
         if(response != null) {
-            return response.acknowledged();
-        }
-        else {
+            return Objects.requireNonNullElse(response.acknowledged(), false);
+        } else {
             return false;
         }
     }
@@ -210,9 +218,9 @@ public class ESearch implements Search {
         DeleteIndexResponse deleteIndexResponse = null;
         try {
             deleteIndexResponse = client.indices().delete(d -> d
-                    .index(ESUtil.index));
+                    .index(EsUtil.index));
         } catch (Exception e) {
-
+            // 删除索引引发的所有异常
         }
         if(deleteIndexResponse == null) {
             return false;
@@ -223,18 +231,20 @@ public class ESearch implements Search {
 
     @Override
     public void close() {
-        ESUtil.release();
+        EsUtil.release();
     }
 
     private List<ResultEntry> dealSearchResponse(SearchResponse<ResultEntry> searchResponse) {
         if(searchResponse != null) {
             List<ResultEntry> resultEntryList = new ArrayList<>();
             List<Hit<ResultEntry>> hits = searchResponse.hits().hits();
-            searchCount = searchResponse.hits().total().value();
+            if (searchResponse.hits().total() != null) {
+                searchCount = searchResponse.hits().total().value();
+            }
             for(Hit<ResultEntry> hit : hits) {
                 ResultEntry source = hit.source();
                 Map<String, List<String>> highlight = hit.highlight();
-                if(highlight != null) {
+                if(highlight != null && source != null) {
                     List<String> titles = highlight.get("title");
                     List<String> texts = highlight.get("text");
                     if(titles != null && titles.size() > 0) {

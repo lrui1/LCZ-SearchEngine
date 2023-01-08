@@ -1,6 +1,6 @@
-<%@ page import="ES.impl.ESearch" %>
-<%@ page import="ES.Search" %>
-<%@ page import="Bean.ResultEntry" %>
+<%@ page import="es.impl.EsSearch" %>
+<%@ page import="es.Search" %>
+<%@ page import="bean.ResultEntry" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
@@ -47,7 +47,7 @@
     int currentPage = Integer.parseInt(page1);
 
     // 去后台搜索结果
-    Search search = new ESearch();
+    Search search = new EsSearch();
     List<ResultEntry> searchResult = new ArrayList<>();
     if(inputText != null) {
         if(beginDate == null && endDate == null) {

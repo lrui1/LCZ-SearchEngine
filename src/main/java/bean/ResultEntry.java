@@ -1,14 +1,22 @@
-package Bean;
+package bean;
 
 import java.util.Objects;
 
+/**
+ * @author 开架大飞机
+ * @description 爬虫爬取条目类
+ * @date: 2022/12/17
+ */
 public class ResultEntry {
-    private String url;   // 所有的<a>标签
-    private String title; // <head> 里的title
-    private String text;  // <body>里的text
-    private String declareTime; // 时间格式： xxxx-xx-xx
 
-    // 需添加默认构造函数，否则Jackson会抛出异常，即无法正常完成反序列化
+    private String url;
+    private String title;
+    private String text;
+    private String declareTime;
+    // 时间格式： xxxx-xx-xx
+    /**
+     * 需添加默认构造函数，否则Jackson会抛出异常，即无法正常完成反序列化
+     */
     public ResultEntry() {
         super();
     }
@@ -64,8 +72,12 @@ public class ResultEntry {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         ResultEntry that = (ResultEntry) o;
         return Objects.equals(url, that.url) && Objects.equals(title, that.title) && Objects.equals(text, that.text) && Objects.equals(declareTime, that.declareTime);
     }

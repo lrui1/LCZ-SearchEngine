@@ -1,11 +1,11 @@
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
-import utils.ESUtil;
+import utils.EsUtil;
 
 
 public class DeleteIndex {
     public static void main(String[] args) {
-        ElasticsearchClient client = ESUtil.getConnect();
+        ElasticsearchClient client = EsUtil.getConnect();
         DeleteIndexResponse deleteIndexResponse = null;
         try {
             deleteIndexResponse = client.indices().delete(d -> d
@@ -18,6 +18,6 @@ public class DeleteIndex {
         } else {
             System.out.println(deleteIndexResponse.acknowledged());
         }
-        ESUtil.release();
+        EsUtil.release();
     }
 }
