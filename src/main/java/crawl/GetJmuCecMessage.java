@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-public class getJmuCecMessage extends getMessageFunctions {
+/**
+ * @author xiudian
+ */
+public class GetJmuCecMessage extends GetMessageFunctions {
     public static List<ResultEntry> backJmuCecMessage() throws IOException {
 //爬取class类部分
         Document document = Jsoup.connect("http://cec.jmu.edu.cn/").get();
@@ -18,7 +21,7 @@ public class getJmuCecMessage extends getMessageFunctions {
         Elements div = document.getElementsByTag("div");
         for (Element element : div) {
             String aClass = element.attr("class");
-            if (aClass != "") classSet.add(aClass);
+            if (aClass != ""){ classSet.add(aClass);}
         }
         List<ResultEntry> message = new ArrayList<>();
         List<ResultEntry> nestMessage = new ArrayList<>();
@@ -36,11 +39,13 @@ public class getJmuCecMessage extends getMessageFunctions {
             Elements a = element.getElementsByTag("a");
             String href = "http://cec.jmu.edu.cn/" + a.attr("href");
             Document document1 = Jsoup.connect(href).get();
-            List<ResultEntry> list = getNestMessage(document1, "div.er_right_new>ul>li", "..", "http://cec.jmu.edu.cn");//将每个部分的第一页数据导入数组，每个部分可以获得此模块总共多少页，从而实现每页都访问
+            //将每个部分的第一页数据导入数组，每个部分可以获得此模块总共多少页，从而实现每页都访问
+            List<ResultEntry> list = getNestMessage(document1, "div.er_right_new>ul>li", "..", "http://cec.jmu.edu.cn");
             addToPrintList(printList, list);
             Elements select = document1.select("div.page");
             for (Element element1 : select) {
-                String pageTurnHref = element1.getElementsByTag("a").attr("href");//提供翻页的第一页
+                //提供翻页的第一页
+                String pageTurnHref = element1.getElementsByTag("a").attr("href");
                 List<ResultEntry> pageTurnMsg = getPageTurnMsg(pageTurnHref);
                 addToPrintList(printList, pageTurnMsg);
             }
