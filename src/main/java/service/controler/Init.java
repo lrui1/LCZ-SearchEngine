@@ -5,26 +5,29 @@ import es.Search;
 import es.impl.EsSearch;
 import crawl.GetJmuCecMessage;
 
-import utils.EsUtil;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.List;
-import java.util.Scanner;
 
+/**
+ * @author 开架大飞机
+ * @description 初始化后端数据
+ * @date: 2023/1/6
+ */
 public class Init {
     public static void main(String[] args) throws InterruptedException {
-        Scanner sc = new Scanner(System.in);
         Search search = new EsSearch();
         // 获取索引名
-        System.out.print("请输入索引名:");
-        String index = sc.next();
-        EsUtil.index = index;
-        System.out.println("索引名为:"+index+", 正在删除原有的"+index);
+        String index = "link-repo2";
         // 删除索引库
-        search.deleteIndex();
-        System.out.println("删除"+index+"成功！");
+        boolean deleteBool = search.deleteIndex();
+        if(deleteBool) {
+            System.out.println("删除"+index+"成功！");
+        } else {
+            System.out.println("删除"+index+"失败！");
+            System.exit(0);
+        }
         // 新建索引库
         System.out.println("正在新建·······");
         Reader reader = new StringReader("{\n" +
@@ -51,8 +54,13 @@ public class Init {
                 "    }\n" +
                 "  }\n" +
                 "}");
-        search.newIndex(reader);
-        System.out.println("新建成功!!");
+        boolean newBool = search.newIndex(reader);
+        if(newBool) {
+            System.out.println("新建成功!!");
+        } else {
+            System.out.println("新建失败!!");
+            System.exit(0);
+        }
         // 爬取数据
         System.out.println("正在爬取数据·······");
         Thread.sleep(1000);
@@ -62,16 +70,18 @@ public class Init {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // 展示
-        System.out.println("共爬取了"+printList.size()+"条数据");
-        // 插入ES
-        System.out.println("正在插入ES······");
+        if(printList != null) {
+            // 展示
+            System.out.println("共爬取了"+printList.size()+"条数据");
+            // 插入ES
+            System.out.println("正在插入ES······");
 
-        for(ResultEntry resultEntry : printList) {
-            search.add(resultEntry);
+            for(ResultEntry resultEntry : printList) {
+                search.add(resultEntry);
+            }
+            // 返回提示成功
+            System.out.println("插入ES成功！");
         }
-        // 返回提示成功
-        System.out.println("插入ES成功！");
         search.close();
     }
 }

@@ -1,9 +1,8 @@
 package crawl;
 
-import java.util.Date;
 import java.util.List;
 
-public interface CrawlDao {
+public interface CrawlDAO {
     List<String> crawlLinks();
     String crawlTitle();
     String crawlText();
