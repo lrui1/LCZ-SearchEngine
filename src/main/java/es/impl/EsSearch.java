@@ -80,10 +80,11 @@ public class EsSearch implements Search {
                             .query(q -> q
                                     .multiMatch(m -> m
                                             .query(searchText)
-                                            .fields("title", "text")))
+                                            .fields("title", "text")
+                                            .analyzer("ik_smart")))
                             .highlight(h -> h
-                                    .preTags("<font>")
-                                    .postTags("</font>")
+                                    .preTags("<span class=\"hit-result\">")
+                                    .postTags("</span>")
                                     .fields("title", builder -> builder)
                                     .fields("text", builder -> builder))
                             .from(value)
@@ -110,14 +111,15 @@ public class EsSearch implements Search {
                                             .must(b1 -> b1
                                                     .multiMatch(b2 -> b2
                                                             .query(searchText)
-                                                            .fields("title", "text")))
+                                                            .fields("title", "text")
+                                                            .analyzer("ik_smart")))
                                             .filter(b3 -> b3
                                                     .range(b4 -> b4
                                                             .field("declareTime")
                                                             .gte(jsonBeginDate)))))
                             .highlight(h -> h
-                                    .preTags("<font>")
-                                    .postTags("</font>")
+                                    .preTags("<span class=\"hit-result\">")
+                                    .postTags("</span>")
                                     .fields("title", builder -> builder)
                                     .fields("text", builder -> builder))
                             .from(value)

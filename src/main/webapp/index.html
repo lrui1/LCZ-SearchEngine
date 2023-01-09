@@ -7,23 +7,27 @@
     <!--    引入jquery-ui 时，一定要先引入jquery-->
     <!--    静态引入失败，只能cdn引入 -->
     <script src="js/jquery-3.6.3.min.js"></script>
-    <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="Stylesheet"></link>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" ></script>
+<!--    <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="Stylesheet">-->
+<!--    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" ></script>-->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
     <link rel="shortcut icon" href="img/favicon.png">
     <title>LCZ-SEARCH</title>
 </head>
 <body>
 <div class="container">
-    <img class="mx-auto d-block mt-3" src="img/it人.jpg" width="200" height="200" />
+    <img class="mx-auto d-block mt-3" src="img/it人.jpg" width="200" height="200"  alt=""/>
 </div>
 
 <div class="container mb-5 mt-5">
     <form action="search.jsp" method="get">
         <div class="input-group mx-auto w-50">
-            <input type="search"
-                   class="form-control search-input"
-                   placeholder="Enter content"
-                   name="inputText">
+            <label for="searchInput"></label>
+                <input type="search"
+                       id="searchInput"
+                       class="form-control search-input"
+                       placeholder="Enter content"
+                       name="inputText">
             <button type="submit" class="btn btn-primary">搜索一下</button>
         </div>
     </form>

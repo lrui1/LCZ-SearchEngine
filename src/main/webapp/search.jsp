@@ -21,9 +21,10 @@
     <!--    引入jquery-ui 时，一定要先引入jquery-->
     <!--    静态引入失败，只能cdn引入 -->
     <script src="js/jquery-3.6.3.min.js"></script>
-    <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="Stylesheet"></link>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" ></script>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <script src="js/jquery-ui.min.js"></script>
     <script src="js/jq-paginator.min.js"></script>
+    <link rel="stylesheet" href="css/my_css.css">
     <link rel="shortcut icon" href="img/favicon.png">
     <title>LCZ-SEARCH</title>
 </head>
@@ -66,7 +67,7 @@
     <div id="wrapper" class="">
         <form action="search.jsp" method="get">
             <div class="input-group w-50">
-                <img src="img/logo.png" alt="logo" width="50" height="45">
+                <a href="index.html"><img src="img/logo.png" alt="logo" width="50" height="45"></a>
                 <input type="search"
                        class="form-control search-input ms-3"
                        placeholder="Enter content"
@@ -106,18 +107,18 @@
             for(ResultEntry resultEntry : searchResult) {
                 out.println("<div class=\"col-7\">");
                 out.println("<a class=\"address\" href="+resultEntry.getUrl()+" target=\"_blank\">"+resultEntry.getTitle()+"</a>");
-//            int index1 = resultEntry.getText().indexOf(inputText);
-//            int front = index1-30, behind = index1+30;
-//            if(front < 0)
-//                front = 0;
-//            if(behind > resultEntry.getText().length() - 1)
-//                behind = resultEntry.getText().length();
-//            String content = resultEntry.getText().substring(front, behind);
-                String content = resultEntry.getText();
-                if(content.length() > 100) {
-                    content = content.substring(0, 99);
+                // 获取需要输出的区间
+                int front = resultEntry.getText().indexOf("<span");
+                int tail = resultEntry.getText().lastIndexOf("span>");
+                front -= 10; tail += 15;
+                if(front < 0) {
+                    front = 0;
                 }
-                out.println("<p class=\"text-break\">"+content+"</p>");
+                if(tail >= resultEntry.getText().length()) {
+                    tail = resultEntry.getText().length() - 1;
+                }
+                String content = resultEntry.getText().substring(front, tail);
+                out.println("<p>"+content+"</p>");
                 out.println("</div>");
             }
         %>
@@ -164,13 +165,6 @@
         }
     });
 </script>
-
-
-<script>
-    <%--    给input部件增加初始值--%>
-    $(".search-input").val(getQueryVariable("inputText"));
-</script>
-
 <script src="js/my-js.js"></script>
 <script src="bootstrap5/js/bootstrap.bundle.min.js" ></script>
 </body>

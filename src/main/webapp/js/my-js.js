@@ -23,6 +23,13 @@ function myGetDate(date) {
 }
 
 /**
+ * 给input部件添加初值
+ */
+$(function () {
+    $(".search-input").val(getQueryVariable("inputText"));
+})
+
+/**
  * 自动填充——搜索提示
  */
 //参考实例2——https://www.runoob.com/jqueryui/api-autocomplete.html#option-source
