@@ -21,14 +21,18 @@
 
 <div class="container mb-5 mt-5">
     <form action="search.jsp" method="get">
-        <div class="input-group mx-auto w-50">
-            <label for="searchInput"></label>
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="input-group mx-auto col">
+                <label for="searchInput"></label>
                 <input type="search"
                        id="searchInput"
                        class="form-control search-input"
                        placeholder="Enter content"
                        name="inputText">
-            <button type="submit" class="btn btn-primary">搜索一下</button>
+                <button type="submit" class="btn btn-primary">搜索一下</button>
+            </div>
+            <div class="col-lg-3"></div>
         </div>
     </form>
 </div>

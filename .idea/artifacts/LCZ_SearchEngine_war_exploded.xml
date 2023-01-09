@@ -1,10 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="search:war exploded">
-    <output-path>$PROJECT_DIR$/target/search_war_exploded</output-path>
+  <artifact type="exploded-war" name="LCZ-SearchEngine:war exploded">
+    <output-path>$PROJECT_DIR$/target/artifacts/LCZ_SearchEngine_war_exploded</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="search" />
+          <element id="module-output" name="LCZ-SearchEngine" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.12.1" />
@@ -27,7 +27,7 @@
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.75" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="search/web/Web" />
+      <element id="javaee-facet-resources" facet="LCZ-SearchEngine/web/Web" />
     </root>
   </artifact>
 </component>

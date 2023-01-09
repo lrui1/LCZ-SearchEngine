@@ -26,7 +26,6 @@ public class Init {
             System.out.println("删除"+index+"成功！");
         } else {
             System.out.println("删除"+index+"失败！");
-            System.exit(0);
         }
         // 新建索引库
         System.out.println("正在新建·······");

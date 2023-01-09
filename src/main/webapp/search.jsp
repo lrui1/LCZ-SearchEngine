@@ -66,13 +66,16 @@
 <div class="container-fluid mt-4">
     <div id="wrapper" class="">
         <form action="search.jsp" method="get">
-            <div class="input-group w-50">
-                <a href="index.html"><img src="img/logo.png" alt="logo" width="50" height="45"></a>
-                <input type="search"
-                       class="form-control search-input ms-3"
-                       placeholder="Enter content"
-                       name="inputText">
-                <button type="submit" class="btn btn-primary">搜索一下</button>
+            <div class="row">
+                <div class="input-group col">
+                    <a href="index.html"><img src="img/logo.png" alt="logo" width="50" height="45"></a>
+                    <input type="search"
+                           class="form-control search-input ms-3"
+                           placeholder="Enter content"
+                           name="inputText">
+                    <button type="submit" class="btn btn-primary">搜索一下</button>
+                </div>
+                <div class="col-lg-6"></div>
             </div>
         </form>
     </div>
@@ -80,7 +83,7 @@
 
 <div class="container mt-1">
     <div id="tool" class="row">
-        <div class="col-5">
+        <div class="col-9 col-lg-5">
             <%
                 out.println("<small id=\"searchNumTool\">"+"开架大飞机为您搜到"+searchCount+"条记录"+"</small>");
             %>
@@ -105,20 +108,28 @@
     <div class="result">
         <%
             for(ResultEntry resultEntry : searchResult) {
-                out.println("<div class=\"col-7\">");
+                out.println("<div class=\"col col-lg-7 mt-3\">");
                 out.println("<a class=\"address\" href="+resultEntry.getUrl()+" target=\"_blank\">"+resultEntry.getTitle()+"</a>");
-                // 获取需要输出的区间
+                // 获取content需要输出的区间
                 int front = resultEntry.getText().indexOf("<span");
                 int tail = resultEntry.getText().lastIndexOf("span>");
-                front -= 10; tail += 15;
+                front -= 10; tail += 25;
                 if(front < 0) {
                     front = 0;
                 }
-                if(tail >= resultEntry.getText().length()) {
+                if(tail > resultEntry.getText().length() - 1) {
                     tail = resultEntry.getText().length() - 1;
+                    do {
+                        if(!"\"".equals(resultEntry.getText().charAt(tail))) {
+                            tail++;
+                            break;
+                        }
+                        tail--;
+                    }while (tail > 0);
                 }
                 String content = resultEntry.getText().substring(front, tail);
-                out.println("<p>"+content+"</p>");
+                out.println("<div class=\"content\">"+content+"</div>");
+                out.println("<a href="+resultEntry.getUrl()+" style=\"font-size: small; color: gray\">"+resultEntry.getUrl()+"</a>");
                 out.println("</div>");
             }
         %>
@@ -129,7 +140,7 @@
 
 </div>
 
-<div class="container">
+<div class="container mt-5">
     <small id="my-pagination-text">当前第1页</small>
     <ul id="my-pagination" class="pagination">
 

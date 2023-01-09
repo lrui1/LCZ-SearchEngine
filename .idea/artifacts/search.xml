@@ -1,8 +1,8 @@
 <component name="ArtifactManager">
   <artifact type="war" name="search">
-    <output-path>$PROJECT_DIR$/target</output-path>
+    <output-path>$PROJECT_DIR$/target/artifacts/search</output-path>
     <root id="archive" name="search.war">
-      <element id="artifact" artifact-name="search:war exploded" />
+      <element id="artifact" artifact-name="LCZ-SearchEngine:war exploded" />
     </root>
   </artifact>
 </component>

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/jquery-ui.min.css">
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/jq-paginator.min.js"></script>
+    <link rel="stylesheet" href="css/my_css.css">
     <link rel="shortcut icon" href="img/favicon.png">
     <title>LCZ-SEARCH</title>
 </head>
@@ -20,13 +21,16 @@
 <div class="container-fluid mt-4">
     <div id="wrapper" class="">
         <form action="填写对应的servlet路径" method="get">
-            <div class="input-group w-50">
-                <a href="index.html"><img src="img/logo.png" alt="logo" width="50" height="45"></a>
-                <input type="search"
-                       class="form-control search-input ms-3"
-                       placeholder="Enter content"
-                       name="inputText">
-                <button type="submit" class="btn btn-primary">搜索一下</button>
+            <div class="row">
+                <div class="input-group col">
+                    <a href="index.html"><img src="img/logo.png" alt="logo" width="50" height="45"></a>
+                    <input type="search"
+                           class="form-control search-input ms-3"
+                           placeholder="Enter content"
+                           name="inputText">
+                    <button type="submit" class="btn btn-primary">搜索一下</button>
+                </div>
+                <div class="col-lg-6"></div>
             </div>
         </form>
     </div>
@@ -34,7 +38,7 @@
 
 <div class="container mt-1">
     <div id="tool" class="row">
-        <div class="col-5">
+        <div class="col-9 col-lg-5">
             <small id="searchNumTool">开架大飞机为你找到</small>
         </div>
         <div class="col">
@@ -56,19 +60,18 @@
 <!--    a
         p   -->
     <div class="result">
-        <div class="col-7">
-            <a class="address" href="https://www.bilibili.com/" target="_blank"> loremdadadadada</a><br>
-            <p>Lorem <span class="hit-result">ipsum</span> dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</p>
-        </div>
-        <div class="col-7">
-            <a class="address" href="https://www.bilibili.com/" target="_blank"> loremdadadadada</a><br>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</small></p>
-        </div>
+        <div class="content">
 
+        </div>
+        <div class="col col-lg-7 mt-3">
+            <a class="address" href="https://www.bilibili.com/" target="_blank"> loremdadadadada</a><br>
+            <div class="content">Lorem <span class="hit-result">ipsum</span> dolor sit amet, consectetur adipisicing elit. Accusamus atque consequatur culpa fugit provident vero voluptas. Aspernatur cumque esse, impedit minima natus odio placeat praesentium tempora vel veritatis. Quibusdam, veniam.</div>
+            <a href="https://www.bilibili.com/" style="font-size: small; color: gray">https://www.bilibili.com/</a>
+        </div>
     </div>
 </div>
 
-<div class="container">
+<div class="container mt-5">
     <small id="my-pagination-text">当前第1页</small>
     <ul id="my-pagination" class="pagination">
 
