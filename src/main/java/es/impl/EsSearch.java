@@ -55,12 +55,11 @@ public class EsSearch implements Search {
             response = client.search(s -> s
                     .index(EsUtil.index)
                             .query(q -> q
-                                    .match(m -> m
-                                            .field("text")
+                                    .multiMatch(m -> m
                                             .query(searchText)
-                                    )
-                            ),
-                    ResultEntry.class);
+                                            .fields("title", "text")
+                                            .analyzer("ik_smart")))
+                            , ResultEntry.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -145,9 +144,10 @@ public class EsSearch implements Search {
                             .query(q -> q
                                     .bool(b -> b
                                             .must(b1 -> b1
-                                                    .match(b2 -> b2
-                                                            .field("text")
-                                                            .query(searchText)))
+                                                    .multiMatch(b2 -> b2
+                                                            .query(searchText)
+                                                            .fields("title", "text")
+                                                            .analyzer("ik_smart")))
                                             .filter(b3 -> b3
                                                     .range(b4 -> b4
                                                             .field("declareTime")
@@ -174,7 +174,8 @@ public class EsSearch implements Search {
                             .query(q -> q
                                     .match(m -> m
                                             .field("title")
-                                            .query(prefix)))
+                                            .query(prefix)
+                                            .analyzer("ik_smart")))
                     , ResultEntry.class);
         } catch (IOException e) {
             close();
