@@ -25,7 +25,7 @@ import java.util.Objects;
  * @date: 2022/12/17
  */
 public class EsSearch implements Search {
-    ElasticsearchClient client;
+    private ElasticsearchClient client;
     private long searchCount = 0;
 
     public EsSearch() {
