@@ -328,9 +328,7 @@ public class Result extends javax.swing.JFrame {
 
     private void formWindowActivated (java.awt.event.WindowEvent evt){
         // TODO add your handling code here:
-//        input.setText(Input.getText());
-//        List<ResultEntry> results = Input.getResults();
-//        String output = String.valueOf(results.get(0));
+//
 
 
     }
